@@ -1,0 +1,37 @@
+{
+  "id": "./",
+  "name": "IGOR Auswertung (Tabellenversion)",
+  "short_name": "IGOR Erfassen",
+  "lang": "de",
+  "description": "IGOR-Auswertung mit Ergebnis-Liste und Link-Versand f\u00fcr die Saisontabelle: 13 Schuss, die 3 schlechtesten werden gestrichen.",
+  "categories": [
+    "sports",
+    "utilities"
+  ],
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
