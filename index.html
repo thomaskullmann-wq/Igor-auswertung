@@ -109,6 +109,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .ioshint{flex:none;display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;background:var(--warn-bg);color:var(--warn);font-size:13.5px;line-height:1.25;font-weight:600}
 .ioshint span{flex:1}
 .ioshint button{flex:none;min-width:40px;min-height:40px;border:0;background:transparent;font-size:24px;line-height:1;color:inherit}
+.ioshint button.inst{min-width:0;padding:0 14px;border-radius:10px;background:var(--warn);color:var(--warn-bg);font-size:14px;font-weight:700}
 
 /* Tastenblock */
 .padwrap{flex:none;padding:8px 12px calc(6px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
@@ -152,6 +153,11 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
   <div class="ioshint" id="ioshint" hidden>
     <span>Als App sichern: unten auf <b>Teilen</b> tippen, dann auf <b>Zum Home-Bildschirm</b>.</span>
     <button type="button" id="ioshint-x" aria-label="Hinweis schließen">×</button>
+  </div>
+  <div class="ioshint" id="andhint" hidden>
+    <span>Als App sichern – startet dann auch ohne Netz.</span>
+    <button type="button" class="inst" id="andhint-inst">Installieren</button>
+    <button type="button" id="andhint-x" aria-label="Hinweis schließen">×</button>
   </div>
 
   <div class="scroll" id="scroll">
@@ -362,17 +368,37 @@ document.addEventListener('keydown',function(ev){
   else if(k==='Backspace'){ del(); ev.preventDefault(); }
 });
 
+function isStandalone(){
+  return window.navigator.standalone===true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+}
+function wasDismissed(key){ try{ return localStorage.getItem(key)==='1'; }catch(e){ return false; } }
 function iosHint(){
   if(!window.IGOR_PWA){ return; }
   var ios=/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-  var standalone=window.navigator.standalone===true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
-  var dismissed=false; try{ dismissed=localStorage.getItem('igor-hint-ios')==='1'; }catch(e){}
-  if(ios && !standalone && !dismissed){ $('ioshint').hidden=false; }
+  if(ios && !isStandalone() && !wasDismissed('igor-hint-ios')){ $('ioshint').hidden=false; }
 }
 $('ioshint-x').addEventListener('click',function(){
   $('ioshint').hidden=true;
   try{ localStorage.setItem('igor-hint-ios','1'); }catch(e){}
 });
+
+/* Android (Chrome, Edge, Samsung Internet): Browser meldet "installierbar" -> eigener Knopf statt Menüsuche */
+var installEvt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  installEvt=e;
+  if(window.IGOR_PWA && !isStandalone() && !wasDismissed('igor-hint-android')){ $('andhint').hidden=false; }
+});
+$('andhint-inst').addEventListener('click',function(){
+  if(!installEvt){ return; }
+  installEvt.prompt();
+  installEvt.userChoice.then(function(){ installEvt=null; $('andhint').hidden=true; },function(){});
+});
+$('andhint-x').addEventListener('click',function(){
+  $('andhint').hidden=true;
+  try{ localStorage.setItem('igor-hint-android','1'); }catch(e){}
+});
+window.addEventListener('appinstalled',function(){ $('andhint').hidden=true; installEvt=null; });
 document.addEventListener('touchstart',function(){},{passive:true});
 
 buildPad();

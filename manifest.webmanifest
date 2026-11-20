@@ -1,7 +1,13 @@
 {
+  "id": "./",
   "name": "IGOR Auswertung",
   "short_name": "IGOR",
   "lang": "de",
+  "description": "Schnelle Auswertung f\u00fcr IGOR-Wettbewerbe: 13 Schuss, die 3 schlechtesten werden gestrichen.",
+  "categories": [
+    "sports",
+    "utilities"
+  ],
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -20,6 +26,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
