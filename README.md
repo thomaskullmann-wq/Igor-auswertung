@@ -19,6 +19,10 @@ Wie die Auswertung, dazu für die Saisontabelle:
 - `tabellenversion/index.html`: Schütze (Name, Verein) und Wettkampf-Nr. erfassen, Ergebnisse in einer Liste sammeln, Liste per Link senden (WhatsApp, E-Mail, Kopieren)
 - `tabellenversion/tabelle.html`: führt die Ergebnisse mehrerer App-Nutzer zusammen (Link öffnen oder Code einfügen). Einzelwertung Saison: Durchschnitt der besten 6 Ergebnisse, bei Gleichstand Zehner, dann Innenzehner (wie die offizielle Liste). Dazu Tagesliste je Wettkampf, manuelle Erfassung, Sicherung/Wiederherstellung, CSV-Export und Drucken
 
+## Ringtabelle (`ringtabelle/`)
+
+Wie die reine Auswertung, dazu ein Toggle „Tabelle“ neben „Nächster Schütze“: eine eigene Seite zeigt untereinander die Anzahl je Ringwert der gewerteten Schüsse (Innenzehner, Zehn, 9 bis 0) mit Ringen und den gestrichenen Schüssen. Auf der Tabellenseite führen „Zurück“ und „Nächster Schütze“ weiter. Eigener Speicher, keine Anbindung an die Saisontabelle.
+
 ## Datenschutz
 
 - Kein Server, kein Konto, keine Statistik: Der Stand liegt nur lokal im Browser
