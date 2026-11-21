@@ -150,13 +150,13 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webk
 .tally .n{font:700 22px/1 var(--display)}
 .tally .x{color:var(--muted);font-weight:400;margin-left:4px}
 .tally tr.zero th,.tally tr.zero td{opacity:.5}
-.tally .str{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}
+.tally .str{color:var(--muted);font-weight:600}
 .tally.nostr .c-str{display:none}
 .tally tfoot th,.tally tfoot td{height:40px;border-bottom:0;background:var(--struck-bg);font-weight:700}
 .tally tfoot th{text-align:left}
 .tally tfoot .n{font-size:22px}
 .tally tfoot .n{font-variant-numeric:tabular-nums}
-@media (max-width:350px){ .tally th,.tally td{padding:0 5px} .tally .cap{font-size:11px;margin-left:4px} .tally .n{font-size:20px} }
+@media (max-width:350px){ .tally thead th{font-size:11px} .tally th,.tally td{padding:0 5px} .tally .cap{font-size:11px;margin-left:4px} .tally .n{font-size:20px} }
 .tnote{margin:0;font-size:12.5px;color:var(--muted);line-height:1.35}
 .tnote b{color:var(--ink)}
 #tabview{display:block}
@@ -388,13 +388,14 @@ function renderTable(ev){
   var tl=$('tally');
   tl.className='tally num'+(ev.drop>0?'':' nostr');
   tl.innerHTML='<caption class="sr" style="position:absolute;left:-9999px">Anzahl je Ringwert, gewertete Schüsse</caption>'
-    +'<thead><tr><th scope="col">Ringwert</th><th scope="col">Anzahl</th><th scope="col">Ringe</th><th scope="col" class="c-str">gestr.</th></tr></thead>'
+    +'<thead><tr><th scope="col">Ringwert</th><th scope="col">Anzahl</th><th scope="col">Ringe</th><th scope="col" class="c-str">Streicher</th></tr></thead>'
     +'<tbody>'+rows+'</tbody>'
     +'<tfoot><tr><th scope="row">Gewertet</th><td><span class="n" id="t-n">'+nC+'</span></td><td><span class="n" id="t-ring">'+ev.counted+'</span></td><td class="c-str">'+(ev.drop>0?'<span class="str">'+ev.drop+' ×</span>':'')+'</td></tr></tfoot>';
   var done=ev.n===SHOTS, pill=$('t-pill');
   pill.className='pill '+(done?'ok':'warn');
   pill.textContent=done?'13 / 13 Schuss':ev.n+' / 13 Schuss';
-  $('t-note').innerHTML='Zehner gesamt (inkl. Innenzehner): <b>'+ev.tens+'</b> · davon Innenzehner: <b>'+ev.inner+'</b><br>'+(ev.drop>0?'Gewertet: beste 10 von 13. Gestrichen: die 3 niedrigsten, zusammen '+ev.struckSum+' Ringe.':(ev.n===0?'Noch kein Schuss erfasst.':'Streichen erst ab dem 11. Schuss.'));
+  var sl=[]; for(var j=0;j<SHOTS;j++){ if(ev.struck.has(j)){ var sv=state.shots[j]; sl.push('<b>'+sv+'</b>'+(sv===10&&state.inner[j]?' Innen':'')+' (Schuss '+(j+1)+')'); } }
+  $('t-note').innerHTML='Zehner gesamt (inkl. Innenzehner): <b>'+ev.tens+'</b> · davon Innenzehner: <b>'+ev.inner+'</b><br>'+(ev.drop>0?'Gewertet: beste 10 von 13. Streicher: '+sl.join(' · ')+' = <b>'+ev.struckSum+'</b> Ringe.':(ev.n===0?'Noch kein Schuss erfasst.':'Streichen erst ab dem 11. Schuss.'));
 }
 function applyView(){
   var t=(view==='table');
